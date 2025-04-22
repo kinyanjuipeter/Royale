@@ -48,7 +48,7 @@ class Customer(AbstractUser):
     class Meta:
         verbose_name = _('customer')
         verbose_name_plural = _('customers')
-        db_table = 'customer_auth_user'
+        db_table = 'registration_customer'
 
     def __str__(self):
         return f"{self.get_full_name()} ({self.phone_number})"
