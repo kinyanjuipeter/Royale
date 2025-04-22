@@ -98,6 +98,7 @@ DATABASES = {
         default='postgresql://tosh:GK8hPwuCc2ieHYUxEBA42E7heZzOAP0d@dpg-d03ovpre5dus73ahh1ig-a/royal_tech',
         conn_max_age=600,
         conn_health_checks=True,
+        ssl_require=True
     )
 }
 
@@ -208,6 +209,7 @@ SESSION_COOKIE_SAMESITE = 'Lax'
 SECURE_HSTS_SECONDS = 31536000  # 1 year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
+SECURE_SSL_REDIRECT = True
 
 # Jazzmin Settings
 JAZZMIN_SETTINGS = {
