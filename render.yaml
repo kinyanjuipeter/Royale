@@ -10,7 +10,7 @@ services:
     startCommand: gunicorn electronics_shop.wsgi:application
     envVars:
       - key: DATABASE_URL
-        value: postgresql://tosh:GK8hPwuCc2ieHYUxEBA42E7heZzOAP0d@dpg-d03ovpre5dus73ahh1ig-a/royal_tech
+        value: postgres://tosh:GK8hPwuCc2ieHYUxEBA42E7heZzOAP0d@dpg-d03ovpre5dus73ahh1ig-a.frankfurt-postgres.render.com/royal_tech
       - key: SECRET_KEY
         value: your-secret-key-here
       - key: DEBUG

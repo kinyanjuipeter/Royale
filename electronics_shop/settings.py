@@ -94,12 +94,17 @@ WSGI_APPLICATION = 'electronics_shop.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgresql://tosh:GK8hPwuCc2ieHYUxEBA42E7heZzOAP0d@dpg-d03ovpre5dus73ahh1ig-a/royal_tech',
-        conn_max_age=600,
-        conn_health_checks=True,
-        ssl_require=True
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'royal_tech',
+        'USER': 'tosh',
+        'PASSWORD': 'GK8hPwuCc2ieHYUxEBA42E7heZzOAP0d',
+        'HOST': 'dpg-d03ovpre5dus73ahh1ig-a.frankfurt-postgres.render.com',
+        'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require'
+        }
+    }
 }
 
 # Custom user model
