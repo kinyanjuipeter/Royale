@@ -51,7 +51,7 @@ def product_list(request, category_slug=None):
     
     context = {
         'category': category,
-                  'categories': categories,
+        'categories': categories,
         'products': products,
         'active_promotion': active_promotion,
         'current_sort': sort_by,  # Pass the current sort to the template
@@ -60,9 +60,9 @@ def product_list(request, category_slug=None):
 
 def product_detail(request, id, slug):
     product = get_object_or_404(Product,
-                                id=id,
-                                slug=slug,
-                                available=True)
+                               id=id,
+                               slug=slug,
+                               available=True)
     return render(request,
                  'shop/product/detail.html',
                  {'product': product})
@@ -71,19 +71,19 @@ def cart_detail(request):
     cart_items = []
     total = 0
     
-        if request.user.is_authenticated:
+    if request.user.is_authenticated:
         cart = Cart.objects.filter(customer=request.user).first()
         if cart:
             cart_items = list(cart.items.select_related('product').all())
             total = sum(item.get_cost() for item in cart_items)
-        else:
+    else:
         session_cart = request.session.get('cart', [])
         for item in session_cart:
             product = get_object_or_404(Product, id=item['product_id'])
             quantity = item['quantity']
             item_total = product.price * quantity
-                    cart_items.append({
-                        'product': product,
+            cart_items.append({
+                'product': product,
                 'quantity': quantity,
                 'total_price': item_total
             })
@@ -200,7 +200,7 @@ def cart_update(request, product_id):
                     cart_item.quantity = quantity
                     cart_item.save()
                     messages.success(request, f"{product.name} quantity updated.")
-                    else:
+                else:
                     messages.warning(request, "Item not found in cart.")
             else:
                 cart = request.session.get('cart', [])
