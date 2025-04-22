@@ -28,11 +28,12 @@ def product_list(request, category_slug=None):
     products = Product.objects.filter(available=True)
     
     # Get active promotion
-    active_promotion = Promotion.objects.filter(
-        is_active=True,
-        start_date__lte=timezone.now(),
-        end_date__gte=timezone.now()
-    ).first()
+    # active_promotion = Promotion.objects.filter(
+    #     is_active=True,
+    #     start_date__lte=timezone.now(),
+    #     end_date__gte=timezone.now()
+    # ).first()
+    active_promotion = None  # Temporary fix until migrations are run
     
     # Handle sorting
     sort_by = request.GET.get('sort', '')
