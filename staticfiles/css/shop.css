@@ -1,0 +1,51 @@
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    padding-bottom: 60px; /* For mobile nav */
+}
+
+/* Product Cards */
+.product-card {
+    transition: transform 0.3s ease;
+    border: 1px solid #dee2e6;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 107, 204, 0.1);
+}
+
+.product-price {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* Quantity Selector */
+.quantity-selector button {
+    width: 30px;
+}
+
+.quantity-selector input {
+    max-width: 50px; 
+}
+
+/* Promotional Banner */
+.promo-banner {
+    background-color: #0066CC;
+    color: white;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767.98px) {
+    .product-img-placeholder {
+        height: 150px !important;
+    }
+}
+
+/* Mobile Bottom Navigation Fix */
+@media (max-width: 991.98px) {
+    body {
+        padding-bottom: 56px;
+    }
+}

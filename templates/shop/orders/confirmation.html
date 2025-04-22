@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Order Confirmation{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Order Confirmation</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-success">
+                        <h5 class="alert-heading">Thank you for your order!</h5>
+                        <p>Your order has been successfully placed. Order ID: <strong>{{ order.id }}</strong></p>
+                        <hr>
+                        <p class="mb-0">
+                            <i class="fas fa-clock"></i> We will get back to you within working hours (8:00 AM - 6:00 PM)
+                        </p>
+                    </div>
+
+                    <div class="order-details">
+                        <h5>Order Details</h5>
+                        <table class="table">
+                            <tr>
+                                <th>Order ID:</th>
+                                <td>{{ order.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Date:</th>
+                                <td>{{ order.created|date:"F j, Y, g:i a" }}</td>
+                            </tr>
+                            <tr>
+                                <th>Status:</th>
+                                <td><span class="badge bg-warning">{{ order.status }}</span></td>
+                            </tr>
+                            <tr>
+                                <th>Total Amount:</th>
+                                <td><strong>KSh {{ order.total_amount }}</strong></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="order-items mt-4">
+                        <h5>Order Items</h5>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order.items.all %}
+                                <tr>
+                                    <td>{{ item.product.name }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>KSh {{ item.price }}</td>
+                                    <td>KSh {{ item.get_cost }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="shipping-details mt-4">
+                        <h5>Shipping Details</h5>
+                        <table class="table">
+                            <tr>
+                                <th>Name:</th>
+                                <td>{{ order.first_name }} {{ order.last_name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Email:</th>
+                                <td>{{ order.email }}</td>
+                            </tr>
+                            <tr>
+                                <th>Phone:</th>
+                                <td>{{ order.phone_number }}</td>
+                            </tr>
+                            <tr>
+                                <th>Address:</th>
+                                <td>{{ order.address }}</td>
+                            </tr>
+                            <tr>
+                                <th>Location:</th>
+                                <td>{{ order.location }}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a href="{% url 'shop:product_list' %}" class="btn btn-primary">Continue Shopping</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

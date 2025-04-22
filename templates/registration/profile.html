@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Profile | ElectroMart Kenya{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">My Profile</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-4"><strong>Name:</strong></div>
+                        <div class="col-sm-8">{{ user.first_name }} {{ user.last_name }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4"><strong>Phone Number:</strong></div>
+                        <div class="col-sm-8">{{ user.phone_number }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4"><strong>Email:</strong></div>
+                        <div class="col-sm-8">{{ user.email|default:"Not provided" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4"><strong>Location:</strong></div>
+                        <div class="col-sm-8">{{ user.location|default:"Not provided" }}</div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'shop:my_orders' %}" class="btn btn-primary">
+                        <i class="fas fa-box me-2"></i>View My Orders
+                    </a>
+                    <a href="{% url 'registration:password_reset' %}" class="btn btn-outline-secondary ms-2">
+                        <i class="fas fa-key me-2"></i>Change Password
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@media (max-width: 768px) {
+    .card {
+        border-radius: 0;
+        margin: -1rem;
+    }
+    .card-header {
+        border-radius: 0;
+    }
+    .container {
+        padding-bottom: 80px; /* Space for mobile navigation */
+    }
+}
+</style>
+{% endblock %} 

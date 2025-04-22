@@ -1,0 +1,16 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="text-center" style="max-width: 500px; margin: 50px auto;">
+    <h2>Admin Logged Out</h2>
+    <p class="my-4">You have been successfully logged out of the admin panel.</p>
+    <a href="{% url 'admin:login' %}" class="btn btn-primary">
+        <i class="fas fa-sign-in-alt"></i> Log in again
+    </a>
+    <div class="mt-4">
+        <a href="{% url 'shop:product_list' %}" class="text-muted">
+            <i class="fas fa-arrow-left"></i> Return to site
+        </a>
+    </div>
+</div>
+{% endblock %}

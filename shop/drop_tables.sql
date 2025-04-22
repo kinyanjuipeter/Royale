@@ -1,0 +1,19 @@
+-- Drop all tables in the correct order to handle dependencies
+DROP TABLE IF EXISTS shop_review CASCADE;
+DROP TABLE IF EXISTS shop_orderitem CASCADE;
+DROP TABLE IF EXISTS shop_order CASCADE;
+DROP TABLE IF EXISTS shop_cartitem CASCADE;
+DROP TABLE IF EXISTS shop_cart CASCADE;
+DROP TABLE IF EXISTS shop_product CASCADE;
+DROP TABLE IF EXISTS shop_category CASCADE;
+DROP TABLE IF EXISTS shop_customer_password_reset CASCADE;
+DROP TABLE IF EXISTS shop_customer_verification CASCADE;
+DROP TABLE IF EXISTS shop_customer_session CASCADE;
+DROP TABLE IF EXISTS shop_customer CASCADE;
+DROP TABLE IF EXISTS shop_admin_role_assignment CASCADE;
+DROP TABLE IF EXISTS shop_admin_role_permission CASCADE;
+DROP TABLE IF EXISTS shop_admin_permission CASCADE;
+DROP TABLE IF EXISTS shop_admin_role CASCADE;
+DROP TABLE IF EXISTS shop_admin_session CASCADE;
+DROP TABLE IF EXISTS shop_admin CASCADE;
+DROP TABLE IF EXISTS auth_user CASCADE; 

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">My Orders</h1>
+    
+    {% if orders %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Total Amount</th>
+                        <th>Items</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>#{{ order.id }}</td>
+                            <td>{{ order.created|date:"M d, Y H:i" }}</td>
+                            <td>
+                                <span class="badge {% if order.status == 'pending' %}bg-warning
+                                    {% elif order.status == 'processing' %}bg-info
+                                    {% elif order.status == 'shipped' %}bg-primary
+                                    {% elif order.status == 'delivered' %}bg-success
+                                    {% else %}bg-danger{% endif %}">
+                                    {{ order.status|title }}
+                                </span>
+                            </td>
+                            <td>KSh {{ order.total_amount }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" type="button" 
+                                        data-bs-toggle="collapse" 
+                                        data-bs-target="#order{{ order.id }}Items">
+                                    View Items
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" class="p-0">
+                                <div class="collapse" id="order{{ order.id }}Items">
+                                    <div class="p-3 bg-light">
+                                        <table class="table table-sm mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th>Quantity</th>
+                                                    <th>Price</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for item in order.items.all %}
+                                                    <tr>
+                                                        <td>{{ item.product.name }}</td>
+                                                        <td>{{ item.quantity }}</td>
+                                                        <td>KSh {{ item.price }}</td>
+                                                        <td>KSh {{ item.get_cost }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            You haven't placed any orders yet. 
+            <a href="{% url 'shop:product_list' %}" class="alert-link">Start shopping</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %} 

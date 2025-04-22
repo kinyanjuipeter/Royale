@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ product.name }} | ElectroMart Kenya{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    {% if messages %}
+    <div class="alert alert-info">
+        {% for message in messages %}
+        <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div class="row">
+        <div class="col-md-6">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded shadow" 
+                 onerror="handleImageError(this)">
+            {% else %}
+            <img src="{% static 'img/placeholder.png' %}" alt="No image available" class="img-fluid rounded shadow">
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}">Products</a></li>
+                    <li class="breadcrumb-item"><a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+                </ol>
+            </nav>
+            
+            <h1 class="mb-3">{{ product.name }}</h1>
+            <p class="text-muted mb-2">{{ product.brand }}</p>
+            
+            <div class="d-flex align-items-center mb-3">
+                <h3 class="mb-0">KSh {{ product.price }}</h3>
+                {% if product.old_price %}
+                <small class="text-muted text-decoration-line-through ms-2">KSh {{ product.old_price }}</small>
+                {% endif %}
+                {% if product.get_discount_percentage > 0 %}
+                <span class="badge bg-danger ms-2">{{ product.get_discount_percentage }}% OFF</span>
+                {% endif %}
+            </div>
+            
+            <div class="mb-4">
+                <span class="badge {% if product.available %}bg-success{% else %}bg-danger{% endif %}">
+                    {% if product.available %}In Stock{% else %}Out of Stock{% endif %}
+                </span>
+                <small class="text-muted ms-2">({{ product.stock }} available)</small>
+            </div>
+            
+            <p class="mb-4">{{ product.description }}</p>
+            
+            <form action="{% url 'shop:cart_add' product.id %}" method="post" class="mb-4">
+                {% csrf_token %}
+                <div class="input-group mb-3" style="max-width: 200px;">
+                    <button type="button" class="btn btn-outline-secondary" onclick="decrementQuantity()">-</button>
+                    <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ product.stock }}" 
+                           class="form-control text-center">
+                    <button type="button" class="btn btn-outline-secondary" onclick="incrementQuantity()">+</button>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg" {% if not product.available %}disabled{% endif %}>
+                    <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+function handleImageError(img) {
+    img.onerror = null;
+    img.src = "{% static 'img/placeholder.png' %}";
+}
+
+function incrementQuantity() {
+    var input = document.getElementById('quantity');
+    var max = parseInt(input.getAttribute('max'));
+    var current = parseInt(input.value);
+    if (current < max) {
+        input.value = current + 1;
+    }
+}
+
+function decrementQuantity() {
+    var input = document.getElementById('quantity');
+    var current = parseInt(input.value);
+    if (current > 1) {
+        input.value = current - 1;
+    }
+}
+</script>
+{% endblock %}
+{% endblock %}

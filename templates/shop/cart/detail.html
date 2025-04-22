@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Shopping Cart
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Your Shopping Cart</h1>
+    
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if cart_items %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Price</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                        <tr>
+                            <td>
+                                <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'img/default.jpg' %}{% endif %}"
+                                     alt="{{ item.product.name }}" style="max-width: 100px;">
+                            </td>
+                            <td>
+                                <a href="{% url 'shop:product_detail' item.product.id item.product.slug %}">
+                                    {{ item.product.name }}
+                                </a>
+                            </td>
+                            <td>
+                                <form action="{% url 'shop:cart_update' item.product.id %}" method="post" class="update-cart">
+                                    {% csrf_token %}
+                                    <div class="input-group" style="max-width: 150px;">
+                                        <input type="number" name="quantity" class="form-control"
+                                               value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" required>
+                                        <button type="submit" class="btn btn-outline-secondary">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </td>
+                            <td>Ksh. {{ item.product.price }}</td>
+                            <td>Ksh. {{ item.total_price|default:item.get_cost }}</td>
+                            <td>
+                                <a href="{% url 'shop:cart_remove' item.product.id %}" 
+                                   class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr class="table-active">
+                        <td colspan="4"><strong>Total</strong></td>
+                        <td colspan="2"><strong>Ksh. {{ total }}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <a href="{% url 'shop:product_list' %}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left"></i> Continue Shopping
+            </a>
+            {% if user.is_authenticated %}
+                <form action="{% url 'shop:create_order' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check"></i> Make Order
+                    </button>
+                </form>
+            {% else %}
+                <button type="button" class="btn btn-success" onclick="showGuestCheckoutModal()">
+                    <i class="fas fa-check"></i> Make Order
+                </button>
+            {% endif %}
+        </div>
+
+        <!-- Guest Checkout Modal -->
+        <div class="modal fade" id="guestCheckoutModal" tabindex="-1" aria-labelledby="guestCheckoutModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="guestCheckoutModalLabel">Guest Checkout</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="guestCheckoutForm" action="{% url 'shop:guest_checkout' %}" method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="first_name" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="last_name" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone_number" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone_number" name="phone_number" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Delivery Address</label>
+                                <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Complete Order</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <div class="alert alert-info">
+            Your cart is empty. <a href="{% url 'shop:product_list' %}">Continue shopping</a>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+function showGuestCheckoutModal() {
+    var modal = new bootstrap.Modal(document.getElementById('guestCheckoutModal'));
+    modal.show();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var guestCheckoutForm = document.getElementById('guestCheckoutForm');
+    if (guestCheckoutForm) {
+        guestCheckoutForm.addEventListener('submit', function(e) {
+            var phoneInput = document.getElementById('phone_number');
+            var phoneNumber = phoneInput.value.trim();
+            
+            // Basic phone number validation
+            if (!/^\d{10}$/.test(phoneNumber)) {
+                e.preventDefault();
+                alert('Please enter a valid 10-digit phone number');
+                return false;
+            }
+            
+            // Additional validation can be added here
+            return true;
+        });
+    }
+});
+</script>
+{% endblock %}

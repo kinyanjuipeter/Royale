@@ -1,0 +1,439 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ROYALE TECH KUTUS{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Responsive base styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            padding-bottom: 60px; /* Space for mobile nav */
+        }
+        
+        /* Mobile-first navigation */
+        .navbar-brand {
+            font-size: 1.1rem;
+        }
+        
+        /* Improved Search Bar Styling */
+        .search-container {
+            flex: 1;
+            max-width: 600px;
+            margin: 0 20px;
+        }
+        
+        .search-form {
+            position: relative;
+            width: 100%;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 20px;
+            padding-right: 50px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .search-input:focus {
+            border-color: #0066CC;
+            box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
+            outline: none;
+        }
+        
+        .search-button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #0066CC;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .search-button:hover {
+            background: #0052a3;
+        }
+
+        /* Cart Icon Styling */
+        .cart-link {
+            position: relative;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #333;
+        }
+        
+        @media (max-width: 768px) {
+            .cart-link {
+                display: none !important; /* Hide cart in header on mobile */
+            }
+        }
+        
+        .cart-link:hover {
+            background: #f8f9fa;
+            color: #0066CC;
+        }
+        
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #0066CC;
+            color: white;
+            border-radius: 50%;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Custom Dropdown Styling */
+        .custom-dropdown {
+            margin-left: 100px;
+            position: relative;
+        }
+
+        .custom-dropdown .dropdown-toggle {
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .custom-dropdown .dropdown-toggle:hover,
+        .custom-dropdown .dropdown-toggle:focus {
+            background: #f8f9fa;
+        }
+
+        .custom-dropdown .dropdown-menu {
+            margin-top: 10px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 8px 0;
+            min-width: 200px;
+        }
+
+        .custom-dropdown .dropdown-item {
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #333;
+            transition: all 0.2s ease;
+        }
+
+        .custom-dropdown .dropdown-item i {
+            width: 20px;
+            text-align: center;
+            color: #666;
+        }
+
+        .custom-dropdown .dropdown-item:hover {
+            background: #f8f9fa;
+            color: #0066CC;
+        }
+
+        .custom-dropdown .dropdown-item:hover i {
+            color: #0066CC;
+        }
+
+        .custom-dropdown .dropdown-divider {
+            margin: 8px 0;
+            border-top: 1px solid #eee;
+        }
+
+        .custom-dropdown .btn-logout {
+            width: 100%;
+            text-align: left;
+            background: none;
+            color: #dc3545;
+        }
+
+        .custom-dropdown .btn-logout:hover {
+            background: #fff5f5;
+        }
+        
+        .category-nav {
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .category-item {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        
+        /* Responsive tables */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Mobile bottom nav */
+        .mobile-bottom-nav {
+            display: none;
+        }
+        
+        @media (max-width: 992px) {
+            .desktop-nav .d-flex {
+                flex-direction: column;
+            }
+            .desktop-nav .search-bar {
+                margin: 10px 0;
+                max-width: 100%;
+            }
+            .desktop-nav .navbar-brand {
+                margin-bottom: 10px;
+            }
+
+            .dropdown{
+                display: none;
+            }
+
+            .nav-link{
+                display: none;
+            }
+            
+            .search-bar {
+                max-width: 100%;
+            }
+        }
+
+        /* Mobile Bottom Navigation Styles */
+        @media (max-width: 768px) {
+            .mobile-bottom-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: white;
+                box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+                z-index: 1000;
+                padding: 5px 0;
+                justify-content: space-between;
+            }
+
+            .mobile-bottom-nav a {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none;
+                color: #666;
+                font-size: 0.75rem;
+                position: relative;
+                padding: 2px;
+            }
+
+            .mobile-bottom-nav a i {
+                font-size: 1.1rem;
+                margin-bottom: 2px;
+            }
+
+            .mobile-bottom-nav a:hover,
+            .mobile-bottom-nav a:active {
+                color: #0066CC;
+            }
+
+            .mobile-bottom-nav .cart-badge {
+                position: absolute;
+                top: -2px;
+                right: 50%;
+                transform: translateX(8px);
+                background: #0066CC;
+                color: white;
+                border-radius: 50%;
+                padding: 3px 6px;
+                font-size: 0.7rem;
+                font-weight: 600;
+            }
+
+            body {
+                padding-bottom: 60px;
+            }
+        }
+    </style>
+    <link href="{% static 'css/shop.css' %}" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Desktop Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm desktop-nav">
+        <div class="container">
+            <div class="d-flex align-items-center w-100">
+                <!-- Logo and Brand -->
+                <a class="navbar-brand fw-bold" href="{% url 'shop:product_list' %}" style="color: #0066CC;">
+                    <i class="fas fa-laptop-code me-2"></i>ROYALE TECH KUTUS
+                </a>
+                
+                <!-- Search Bar -->
+                <div class="search-container">
+                    <form action="{% url 'shop:search_products' %}" method="GET" class="search-form">
+                        <input type="text" name="q" class="search-input" 
+                               placeholder="Search for products..." 
+                               value="{{ request.GET.q|default:'' }}"
+                               required>
+                        <button type="submit" class="search-button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- User/Cart -->
+                <div class="d-flex align-items-center">
+                    {% if user.is_authenticated %}
+                    <div class="custom-dropdown dropdown">
+                        <a href="#" class="nav-link text-dark dropdown-toggle" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i>
+                            <span>{{ user.username }}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'shop:my_orders' %}">
+                                    <i class="fas fa-box"></i>
+                                    <span>My Orders</span>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="post" action="{% url 'registration:logout' %}" class="d-inline w-100">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item btn-logout">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        <span>Logout</span>
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'registration:login' %}" class="nav-link text-dark mx-2">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    <a href="{% url 'registration:register' %}" class="nav-link text-dark mx-2">
+                        <i class="fas fa-user-plus"></i> Register
+                    </a>
+                    {% endif %}
+                    
+                    <a href="{% url 'shop:cart_detail' %}" class="cart-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        {% if cart.items_count > 0 %}
+                        <span class="cart-badge">{{ cart.items_count }}</span>
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Category Navigation -->
+    <div class="category-nav bg-light py-2 border-bottom">
+        <div class="container">
+            <div class="d-flex overflow-auto">
+                {% for category in categories %}
+                <a href="{{ category.get_absolute_url }}" class="category-item text-nowrap px-3 py-1 text-dark">
+                    {{ category.name }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container my-4">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4" style="margin-bottom: -100px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>ROYALE TECH KUTUS</h5>
+                    <p>Your trusted online electronics store with the best prices and quality products.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">About Us</a></li>
+                        <li><a href="#" class="text-white">Contact</a></li>
+                        <li><a href="#" class="text-white">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Connect With Us</h5>
+                    <div class="social-icons">
+                        <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-3 bg-secondary">
+            <div class="text-center">
+                <small>&copy; {% now "Y" %} ROYALE TECH KUTUS. All rights reserved.</small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <a href="{% url 'shop:product_list' %}">
+            <i class="fas fa-home"></i>
+            <div>Home</div>
+        </a>
+        <a href="{% url 'shop:cart_detail' %}">
+            <i class="fas fa-shopping-cart"></i>
+            <div>Cart</div>
+            {% if cart.items_count > 0 %}
+            <span class="cart-badge">{{ cart.items_count }}</span>
+            {% endif %}
+        </a>
+        <a href="{% url 'shop:my_orders' %}">
+            <i class="fas fa-box"></i>
+            <div>Orders</div>
+        </a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'registration:logout' %}">
+            <i class="fas fa-sign-out-alt"></i>
+            <div>Logout</div>
+        </a>
+        {% else %}
+        <a href="{% url 'registration:login' %}">
+            <i class="fas fa-sign-in-alt"></i>
+            <div>Login</div>
+        </a>
+        {% endif %}
+    </nav>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
