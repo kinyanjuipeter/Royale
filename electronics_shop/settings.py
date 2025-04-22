@@ -60,7 +60,7 @@ MIDDLEWARE = [
 ]
 
 # CSRF settings
-CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
+CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
 CSRF_USE_SESSIONS = True
 CSRF_COOKIE_SAMESITE = 'Lax'
@@ -91,16 +91,13 @@ WSGI_APPLICATION = 'electronics_shop.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASE_URL = os.environ.get('DATABASE_URL', 'postgresql://tosh:GK8hPwuCc2ieHYUxEBA42E7heZzOAP0d@dpg-d03ovpre5dus73ahh1ig-a/royal_tech')
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=DATABASE_URL,
+        default='postgresql://tosh:GK8hPwuCc2ieHYUxEBA42E7heZzOAP0d@dpg-d03ovpre5dus73ahh1ig-a/royal_tech',
         conn_max_age=600,
         conn_health_checks=True,
-        ssl_require=False
     )
 }
 
@@ -203,9 +200,14 @@ LOGOUT_REDIRECT_URL = 'registration:login'
 # Session settings
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 1209600  # 2 weeks in seconds
-SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
+SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = 'Lax'
+
+# Security settings
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
 
 # Jazzmin Settings
 JAZZMIN_SETTINGS = {
