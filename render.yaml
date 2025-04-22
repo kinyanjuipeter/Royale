@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: royale
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py migrate
+      python manage.py collectstatic --noinput
+    startCommand: python manage.py runserver 0.0.0.0:$PORT
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://tosh:GK8hPwuCc2ieHYUxEBA42E7heZzOAP0d@dpg-d03ovpre5dus73ahh1ig-a/royal_tech
+      - key: SECRET_KEY
+        value: your-secret-key-here
+      - key: DEBUG
+        value: False
+      - key: ALLOWED_HOSTS
+        value: royale-xl3u.onrender.com,.onrender.com,localhost,127.0.0.1 

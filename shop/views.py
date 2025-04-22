@@ -24,8 +24,9 @@ def cart_detail_redirect(request):
 
 def product_list(request, category_slug=None):
     category = None
-    categories = Category.objects.all()
-    products = Product.objects.filter(available=True)
+    # Temporarily disable categories until migrations are run
+    categories = []
+    products = []
     
     # Get active promotion
     # active_promotion = Promotion.objects.filter(
@@ -37,18 +38,6 @@ def product_list(request, category_slug=None):
     
     # Handle sorting
     sort_by = request.GET.get('sort', '')
-    if sort_by == 'price_asc':
-        products = products.order_by('price')
-    elif sort_by == 'price_desc':
-        products = products.order_by('-price')
-    elif sort_by == 'top_rated':
-        products = products.annotate(
-            avg_rating=models.Avg('reviews__rating')
-        ).order_by('-avg_rating')
-    
-    if category_slug:
-        category = get_object_or_404(Category, slug=category_slug)
-        products = products.filter(category=category)
     
     context = {
         'category': category,
