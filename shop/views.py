@@ -239,10 +239,10 @@ def guest_checkout(request):
         last_name = request.POST.get('last_name')
         phone_number = request.POST.get('phone_number')
         email = request.POST.get('email')
-        address = request.POST.get('address')
+        location = request.POST.get('location')
         
         # Validate required fields
-        if not all([first_name, last_name, phone_number, address]):
+        if not all([first_name, last_name, phone_number, location]):
             messages.error(request, "Please fill in all required fields")
             return redirect('shop:cart_detail')
             
@@ -270,7 +270,7 @@ def guest_checkout(request):
                 last_name=last_name,
                 phone_number=phone_number,
                 email=email,
-                address=address,
+                location=location,
                 total_amount=total_amount,
                 status='pending'
             )
@@ -327,9 +327,6 @@ def create_order(request):
             last_name=customer.last_name,
             email=customer.email,
             phone_number=customer.phone_number,
-            address="To be provided",  # Default value since Customer model doesn't have address
-            postal_code="00000",  # Default value
-            city="Nairobi",  # Default value
             location=customer.location or "Nairobi",  # Use customer's location or default
             status='pending',
             total_amount=total_amount  # Set the calculated total amount
