@@ -84,7 +84,17 @@
         
         @media (max-width: 768px) {
             .cart-link {
-                display: none !important; /* Hide cart in header on mobile */
+                 display: none !important; /*Hide cart in header on mobile */
+            }
+
+            nav{
+                width: 100%;
+                background: #333;
+                height: 120px;
+            }
+
+            .category-nav{
+                display: none;
             }
         }
         
@@ -201,6 +211,7 @@
         @media (max-width: 992px) {
             .desktop-nav .d-flex {
                 flex-direction: column;
+    
             }
             .desktop-nav .search-bar {
                 margin: 10px 0;
@@ -225,6 +236,7 @@
 
         /* Mobile Bottom Navigation Styles */
         @media (max-width: 768px) {
+
             .mobile-bottom-nav {
                 display: flex;
                 position: fixed;

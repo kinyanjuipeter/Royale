@@ -20,44 +20,93 @@
     {% endif %}
 
     {% if cart_items %}
+
+        <style>
+            .table-responsive{
+                border: 1px solid #ccc;
+                padding: 10px;
+                border-radius: 10px;
+            }
+
+            .table{
+                border: none;
+                border-bottom: none;
+                padding: 10px;
+            }
+
+            td{
+                border: none;
+            }
+
+            tr{
+                border: none;
+            }
+
+            th{
+                border: none;
+            }
+        </style>
         <div class="table-responsive">
             <table class="table">
                 <thead>
                     <tr>
                         <th>Image</th>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Unit Price</th>
-                        <th>Price</th>
-                        <th>Remove</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for item in cart_items %}
                         <tr>
-                            <td>
-                                <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'img/default.jpg' %}{% endif %}"
-                                     alt="{{ item.product.name }}" style="max-width: 100px;">
-                            </td>
-                            <td>
-                                <a href="{% url 'shop:product_detail' item.product.id item.product.slug %}">
-                                    {{ item.product.name }}
-                                </a>
-                            </td>
-                            <td>
-                                <form action="{% url 'shop:cart_update' item.product.id %}" method="post" class="update-cart">
-                                    {% csrf_token %}
-                                    <div class="input-group" style="max-width: 150px;">
-                                        <input type="number" name="quantity" class="form-control"
-                                               value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" required>
-                                        <button type="submit" class="btn btn-outline-secondary">
-                                            <i class="fas fa-sync-alt"></i>
-                                        </button>
-                                    </div>
-                                </form>
-                            </td>
-                            <td>Ksh. {{ item.product.price }}</td>
-                            <td>Ksh. {{ item.total_price }}</td>
+
+                            <tr>
+                                <td>
+                                    <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'img/default.jpg' %}{% endif %}"
+                                         alt="{{ item.product.name }}" style="max-width: 100px;">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                
+                                <th>Product</th>
+                            
+                                <td>
+                                    <a href="{% url 'shop:product_detail' item.product.id item.product.slug %}">
+                                        {{ item.product.name }}
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>
+                                    Quantity
+                                </th>
+                                <td>
+                                    <form action="{% url 'shop:cart_update' item.product.id %}" method="post" class="update-cart">
+                                        {% csrf_token %}
+                                        <div class="input-group" style="max-width: 150px;">
+                                            <input type="number" name="quantity" class="form-control"
+                                                   value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" required>
+                                            <button type="submit" class="btn btn-outline-secondary">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>
+                                    Unit Price
+                                </th>
+                                <td>Ksh. {{ item.product.price }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>
+                                    Price
+                                </th>
+                                <td>Ksh. {{ item.total_price }}</td>
+                            </tr>
+                            
                             <td>
                                 <a href="{% url 'shop:cart_remove' item.product.id %}" 
                                    class="btn btn-danger btn-sm">
