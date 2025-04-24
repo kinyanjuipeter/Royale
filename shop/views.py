@@ -24,27 +24,35 @@ def cart_detail_redirect(request):
 
 def product_list(request, category_slug=None):
     category = None
-    # Temporarily disable categories until migrations are run
-    categories = []
-    products = []
+    categories = Category.objects.all()
+    products = Product.objects.filter(available=True)
+    
+    if category_slug:
+        category = get_object_or_404(Category, slug=category_slug)
+        products = products.filter(category=category)
     
     # Get active promotion
-    # active_promotion = Promotion.objects.filter(
-    #     is_active=True,
-    #     start_date__lte=timezone.now(),
-    #     end_date__gte=timezone.now()
-    # ).first()
-    active_promotion = None  # Temporary fix until migrations are run
+    active_promotion = Promotion.objects.filter(
+        is_active=True,
+        start_date__lte=timezone.now(),
+        end_date__gte=timezone.now()
+    ).first()
     
     # Handle sorting
     sort_by = request.GET.get('sort', '')
+    if sort_by == 'price_asc':
+        products = products.order_by('price')
+    elif sort_by == 'price_desc':
+        products = products.order_by('-price')
+    elif sort_by == 'top_rated':
+        products = products.annotate(avg_rating=models.Avg('reviews__rating')).order_by('-avg_rating')
     
     context = {
         'category': category,
         'categories': categories,
         'products': products,
         'active_promotion': active_promotion,
-        'current_sort': sort_by,  # Pass the current sort to the template
+        'current_sort': sort_by,
     }
     return render(request, 'shop/product/list.html', context)
 
