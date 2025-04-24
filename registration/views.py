@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 class CustomerRegistrationView(CreateView):
     template_name = 'registration/register.html'
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('registration:login')
 
     def form_valid(self, form):
         response = super().form_valid(form)
