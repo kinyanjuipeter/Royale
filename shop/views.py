@@ -66,21 +66,28 @@ def product_detail(request, id, slug):
                  {'product': product})
 
 def cart_detail(request):
-    cart_items = []
+    cart_items_data = []  # Use a different name to avoid confusion
     total = 0
     
     if request.user.is_authenticated:
         cart = Cart.objects.filter(customer=request.user).first()
         if cart:
-            cart_items = list(cart.items.select_related('product').all())
-            total = sum(item.get_cost() for item in cart_items)
+            # Iterate through CartItem instances and create dictionaries
+            for item in cart.items.select_related('product').all():
+                item_total = item.get_cost()
+                cart_items_data.append({
+                    'product': item.product,
+                    'quantity': item.quantity,
+                    'total_price': item_total
+                })
+                total += item_total
     else:
         session_cart = request.session.get('cart', [])
-        for item in session_cart:
-            product = get_object_or_404(Product, id=item['product_id'])
-            quantity = item['quantity']
+        for item_session in session_cart: # Renamed to avoid inner/outer scope clash
+            product = get_object_or_404(Product, id=item_session['product_id'])
+            quantity = item_session['quantity']
             item_total = product.price * quantity
-            cart_items.append({
+            cart_items_data.append({
                 'product': product,
                 'quantity': quantity,
                 'total_price': item_total
@@ -88,7 +95,7 @@ def cart_detail(request):
             total += item_total
     
     context = {
-        'cart_items': cart_items,
+        'cart_items': cart_items_data, # Pass the consistent list of dictionaries
         'total': total,
     }
     return render(request, 'shop/cart/detail.html', context)

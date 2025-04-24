@@ -57,7 +57,7 @@
                                 </form>
                             </td>
                             <td>Ksh. {{ item.product.price }}</td>
-                            <td>Ksh. {{ item.total_price|default:item.get_cost }}</td>
+                            <td>Ksh. {{ item.total_price }}</td>
                             <td>
                                 <a href="{% url 'shop:cart_remove' item.product.id %}" 
                                    class="btn btn-danger btn-sm">
