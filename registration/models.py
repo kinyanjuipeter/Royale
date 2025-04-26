@@ -17,6 +17,7 @@ class CustomerManager(BaseUserManager):
         return self.create_user(phone_number, password, **extra_fields)
 
 class Customer(AbstractUser):
+    username = models.CharField(_('username'), max_length=150, unique=True)
     phone_number = models.CharField(_('phone number'), max_length=15, unique=True)
     location = models.CharField(_('location'), max_length=255, blank=True)
     is_verified = models.BooleanField(_('verified'), default=False)
@@ -41,7 +42,7 @@ class Customer(AbstractUser):
     )
     
     USERNAME_FIELD = 'phone_number'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
     objects = CustomerManager()
 

@@ -1,0 +1,1 @@
+web: gunicorn electronics_shop.wsgi:application 

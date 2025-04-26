@@ -35,8 +35,7 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    'royale-xl3u.onrender.com',
-    '.onrender.com'  # This allows all Render subdomains
+    '.railway.app',  # This allows all Railway subdomains
 ]
 
 
@@ -56,6 +55,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add whitenoise for static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -99,17 +99,11 @@ WSGI_APPLICATION = 'electronics_shop.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'royal_tech',
-        'USER': 'tosh',
-        'PASSWORD': 'GK8hPwuCc2ieHYUxEBA42E7heZzOAP0d',
-        'HOST': 'dpg-d03ovpre5dus73ahh1ig-a.frankfurt-postgres.render.com',
-        'PORT': '5432',
-        'OPTIONS': {
-            'sslmode': 'require'
-        }
-    }
+    'default': dj_database_url.config(
+        default='postgresql://postgres:QxwzKsefzxDXmPOkXiimvLeYWFuUUDhF@tramway.proxy.rlwy.net:22234/railway',
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
 
 # Custom user model
@@ -186,19 +180,17 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Ensure Django can find static files in development
 DEBUG = True
 
 # Cloudinary settings
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', 'dmtukjdoi'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', '836655159912883'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', 'irypdVOOp0CvgHpiLY1I6RFANCM')
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET')
 }
 
 # Media files configuration
@@ -228,7 +220,7 @@ SESSION_COOKIE_SAMESITE = 'Lax'
 SECURE_HSTS_SECONDS = 31536000  # 1 year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
-SECURE_SSL_REDIRECT = False  # Disable SSL redirect as Render handles this
+SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Jazzmin Settings
