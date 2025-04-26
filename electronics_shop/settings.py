@@ -14,6 +14,10 @@ import os
 from pathlib import Path
 import dj_database_url
 from django.core.management.utils import get_random_secret_key
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary_storage',
     'shop.apps.ShopConfig',
     'registration'
 ]
@@ -189,6 +194,15 @@ STATICFILES_DIRS = [
 # Ensure Django can find static files in development
 DEBUG = True
 
+# Cloudinary settings
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', 'dmtukjdoi'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', '836655159912883'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', 'irypdVOOp0CvgHpiLY1I6RFANCM')
+}
+
+# Media files configuration
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 

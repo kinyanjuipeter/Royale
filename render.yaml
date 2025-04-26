@@ -18,4 +18,10 @@ services:
       - key: ALLOWED_HOSTS
         value: royale-xl3u.onrender.com,.onrender.com,localhost,127.0.0.1
       - key: DJANGO_SETTINGS_MODULE
-        value: electronics_shop.settings 
+        value: electronics_shop.settings
+      - key: CLOUDINARY_CLOUD_NAME
+        value: dmtukjdoi
+      - key: CLOUDINARY_API_KEY
+        value: 836655159912883
+      - key: CLOUDINARY_API_SECRET
+        value: irypdVOOp0CvgHpiLY1I6RFANCM 
