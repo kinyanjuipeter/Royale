@@ -36,6 +36,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '.railway.app',  # This allows all Railway subdomains
+    'royale-tech.up.railway.app',  # Specific Railway domain
 ]
 
 
@@ -69,6 +70,7 @@ CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
 CSRF_USE_SESSIONS = True
 CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_TRUSTED_ORIGINS = ['https://royale-tech.up.railway.app']
 
 ROOT_URLCONF = 'electronics_shop.urls'
 
