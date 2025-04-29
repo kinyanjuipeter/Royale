@@ -133,13 +133,29 @@ LOGGING = {
         },
     },
     'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
         'registration': {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,
         },
+        'gunicorn': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
     },
 }
+
+# Add startup logging
+import logging
+logger = logging.getLogger('django')
+logger.info('Starting application with these settings:')
+logger.info(f'DATABASES = {DATABASES}')
+logger.info(f'ALLOWED_HOSTS = {ALLOWED_HOSTS}')
+logger.info(f'STATIC_ROOT = {STATIC_ROOT}')
 
 # Admin settings
 ADMIN_SITE_HEADER = "Royal Tech Kutus Admin"
