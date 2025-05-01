@@ -6,7 +6,7 @@ buildCommand = "pip install -r requirements.txt && python manage.py collectstati
 startCommand = "gunicorn electronics_shop.wsgi:application --bind 0.0.0.0:$PORT"
 healthcheckPath = "/"
 healthcheckTimeout = 100
-restartPolicyType = "on-failure"
+restartPolicyType = "always"
 restartPolicyMaxRetries = 10
 
 [deploy.healthcheck]
