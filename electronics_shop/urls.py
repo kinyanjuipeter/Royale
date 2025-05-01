@@ -43,6 +43,9 @@ urlpatterns = [
     
     # Registration URLs
     path('accounts/', include('registration.urls', namespace='registration')),
+    
+    # Health check URL
+    path('health/', lambda request: HttpResponse('OK'), name='health'),
 ]
 
 if settings.DEBUG:
