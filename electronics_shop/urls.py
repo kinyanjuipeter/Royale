@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from shop.admin import admin_site
 from django.views.generic import RedirectView
+from django.http import HttpResponse
 
 # Customize admin site
 admin.site.site_header = settings.ADMIN_SITE_HEADER
@@ -28,8 +29,8 @@ admin.site.site_title = settings.ADMIN_SITE_TITLE
 admin.site.index_title = settings.ADMIN_INDEX_TITLE
 
 urlpatterns = [
-    # Root URL redirects to shop
-    path('', RedirectView.as_view(url='shop/', permanent=True)),
+    # Healthcheck root URL returns 200 OK
+    path('', lambda request: HttpResponse('OK'), name='healthcheck'),
     
     # Admin URLs
     path('admin/', admin_site.urls),
