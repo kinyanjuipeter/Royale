@@ -16,19 +16,8 @@ import dj_database_url
 from django.core.management.utils import get_random_secret_key
 from dotenv import load_dotenv
 
-# Load environment variables with validation
+# Load environment variables
 load_dotenv()
-
-# Validate required environment variables
-required_vars = ['SECRET_KEY', 'DATABASE_URL']
-missing_vars = [var for var in required_vars if not os.environ.get(var)]
-
-if missing_vars and os.environ.get('IGNORE_MISSING_ENV') != 'True':
-    raise ImportError(
-        f"Missing required environment variables: {', '.join(missing_vars)}. "
-        "Please set these variables or set IGNORE_MISSING_ENV=True "
-        "to continue with default values (not recommended for production)."
-    )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -144,29 +133,13 @@ LOGGING = {
         },
     },
     'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'INFO',
-        },
         'registration': {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,
         },
-        'gunicorn': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
     },
 }
-
-# Add startup logging
-import logging
-logger = logging.getLogger('django')
-logger.info('Starting application with these settings:')
-logger.info(f'DATABASES = {DATABASES}')
-logger.info(f'ALLOWED_HOSTS = {ALLOWED_HOSTS}')
-logger.info(f'STATIC_ROOT = {STATIC_ROOT}')
 
 # Admin settings
 ADMIN_SITE_HEADER = "Royal Tech Kutus Admin"
