@@ -32,7 +32,7 @@ def healthcheck(request):
     return HttpResponse("OK")
 
 urlpatterns = [
-    # Healthcheck root URL returns 200 OK
+    # Root URL returns 200 OK for Railway health check
     path('', healthcheck, name='healthcheck'),
     
     # Admin URLs
