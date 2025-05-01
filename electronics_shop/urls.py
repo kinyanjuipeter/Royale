@@ -28,9 +28,12 @@ admin.site.site_header = settings.ADMIN_SITE_HEADER
 admin.site.site_title = settings.ADMIN_SITE_TITLE
 admin.site.index_title = settings.ADMIN_INDEX_TITLE
 
+def healthcheck(request):
+    return HttpResponse("OK")
+
 urlpatterns = [
     # Healthcheck root URL returns 200 OK
-    path('', lambda request: HttpResponse('OK'), name='healthcheck'),
+    path('', healthcheck, name='healthcheck'),
     
     # Admin URLs
     path('admin/', admin_site.urls),
