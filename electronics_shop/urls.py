@@ -32,9 +32,12 @@ def healthcheck(request):
     return HttpResponse("OK")
 
 urlpatterns = [
-    # Root URL returns 200 OK for Railway health check
-    path('', healthcheck, name='healthcheck'),
-    
+    # Health check URL for Railway
+    path('health/', healthcheck, name='health'),
+
+    # Redirect root URL to shop
+    path('', RedirectView.as_view(url='/shop/', permanent=False)),
+
     # Admin URLs
     path('admin/', admin_site.urls),
     
@@ -43,9 +46,6 @@ urlpatterns = [
     
     # Registration URLs
     path('accounts/', include('registration.urls', namespace='registration')),
-    
-    # Health check URL
-    path('health/', lambda request: HttpResponse('OK'), name='health'),
 ]
 
 if settings.DEBUG:
